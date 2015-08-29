@@ -46,7 +46,9 @@ public class PoliticianReadPlatformService {
 	private static final class PoliticianMapper implements RowMapper<PoliticianData> {
 
         public String schema() {
-            return " p.id as id, p.name as name from c_politician p ";
+            return " p.id as id, p.name, cc.`name` as constituencyName, cp.`abbreviation` as partyName, p.`criminal_cases_pending`, p.`education`, p.`totalAssets`, p.`liabilities`" +
+            	   " from c_politician p inner join c_party cp on p.`party_id`=cp.`id`" +
+            	   " inner join c_constituency cc on cc.`id`=p.`constituency_id` ";
         }
 
         @Override
@@ -54,8 +56,15 @@ public class PoliticianReadPlatformService {
 
             final Long id = rs.getLong("id");
             final String name = rs.getString("name");
+            final String constituencyName = rs.getString("constituencyName");
+            final String partyName = rs.getString("partyName");
+            final String education = rs.getString("education");
+            final Long criminalCasesPending = rs.getLong("criminal_cases_pending");
+            final Long totalAssets = rs.getLong("totalAssets");
+            final Long liabilities = rs.getLong("liabilities");
 
-            return PoliticianData.instance(id, name);
+            return PoliticianData.instance(id, name, constituencyName, partyName,
+            		education, criminalCasesPending, totalAssets, liabilities);
         }
     }
 
