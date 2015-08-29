@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,28 +41,37 @@ public class PoliticianApiResource {
 		this.fromApiJsonHelper = fromApiJsonHelper;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)  
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=utf-8")  
 	@Transactional(readOnly = true)
     public String retrievePoliticians() {
         final Collection<PoliticianData> politicians = this.politicianReadPlatformService.retrieveAll();
         return this.jsonSerializer.serialize(politicians);
     }
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)  
+	@RequestMapping(value = "/latlong", method = RequestMethod.GET, produces = "application/json; charset=utf-8")  
+	@Transactional(readOnly = true)
+    public String retrievePoliticiansByLatLong(@RequestParam("lat") final double latitude,
+    		@RequestParam("long") final double longitude) {
+		System.out.println(latitude + "-" + longitude);
+        final Collection<PoliticianData> politicians = this.politicianReadPlatformService.retrieveAll();
+        return this.jsonSerializer.serialize(politicians);
+    }
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")  
 	@Transactional(readOnly = true)
     public String retrievePolitician(@PathVariable("id") long politicianId) {
         final PoliticianData politician = this.politicianReadPlatformService.retrieveOne(politicianId);
         return this.jsonSerializer.serialize(politician);
     }
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	@ResponseBody
     public CommandProcessingResult createPolitician(@RequestBody final  String politician) {
 		return this.politicianWritePlatformService.createPolitician(JsonCommand.from(politician,
 				new JsonParser().parse(politician), fromApiJsonHelper));
     }
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json; charset=utf-8")
 	@ResponseBody
     public CommandProcessingResult updatePolitician(@PathVariable("id") long politicianId,
     		@RequestBody final  String politician) {
@@ -71,7 +81,7 @@ public class PoliticianApiResource {
 
     }
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json; charset=utf-8")
 	@ResponseBody
     public CommandProcessingResult deletePolitician(@PathVariable("id") long politicianId) {
 		return this.politicianWritePlatformService.deletePolitician(politicianId);
