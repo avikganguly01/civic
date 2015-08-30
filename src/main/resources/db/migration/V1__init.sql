@@ -296,3 +296,8 @@ INSERT INTO `spatial_ref_sys` VALUES (1,NULL,NULL,'GEOGCS[\"GCS_WGS_1984\",DATUM
 UNLOCK TABLES;
 
 
+CREATE TABLE `c_api_keys` (
+  `id` tinyint(3) NOT NULL DEFAULT '0',
+  `key` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

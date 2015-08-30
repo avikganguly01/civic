@@ -2,17 +2,26 @@ package org.casual.civic.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.casual.civic.data.PoliticianData;
+import org.casual.civic.exception.ConstituencyNotFoundException;
 import org.casual.civic.exception.PoliticianNotFoundException;
+import org.casual.civic.utils.ProcessorHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
+
+import retrofit.client.Response;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @Service
 public class PoliticianReadPlatformService {
@@ -30,6 +39,44 @@ public class PoliticianReadPlatformService {
         final String sql = "select " + pm.schema() + " order by p.name";
 
         return this.jdbcTemplate.query(sql, pm, new Object[] {});
+	}
+	
+	public List<PoliticianData> retrieveByLatLong(final double latitude, final double longitude) {
+		final PoliticianMapper pm = new PoliticianMapper();
+        final String sql = "select " + pm.schema() + " inner join c_polygons cpo on cpo.OGR_FID=cc.polygon_id " +
+        		" where cpo.OGR_FID = (select cpoo.OGR_FID from c_polygons cpoo where st_contains(cpoo.`SHAPE`, point(?, ?))) order by p.name";
+
+        return this.jdbcTemplate.query(sql, pm, new Object[] {longitude, latitude});
+	}
+	
+	public List<PoliticianData> retrieveByAddress(final String address) {
+		try {
+			final GeocodingService service = ProcessorHelper
+					.createWebHookService("https://maps.googleapis.com/maps/api/geocode");
+			final Map<String, String> queryParams = new HashMap<String, String> ();
+			queryParams.put("address", address);
+			queryParams.put("bounds", "28.3247893,76.7824797|28.9184529,77.3331994");
+			
+			String sql = "select `key` from c_api_keys limit 1";
+	        final List<String> apiKeys = this.jdbcTemplate.queryForList(sql, String.class);
+	        final String geocodingApiKey =  apiKeys.get(0);
+	        queryParams.put("key", geocodingApiKey);
+			
+			final Response response = service.sendRequestWithBounds(queryParams);
+			final JsonObject location = new JsonParser().parse(ProcessorHelper.getResponse(response)).getAsJsonObject()
+			.get("results").getAsJsonArray().get(0).getAsJsonObject().get("geometry")
+			.getAsJsonObject().get("location").getAsJsonObject();
+			final double lat = location.get("lat").getAsDouble();
+			final double longitude = location.get("lng").getAsDouble();
+			final PoliticianMapper pm = new PoliticianMapper();
+	        sql = "select " + pm.schema() + " inner join c_polygons cpo on cpo.OGR_FID=cc.polygon_id " +
+	        		" where cpo.OGR_FID = (select cpoo.OGR_FID from c_polygons cpoo where st_contains(cpoo.`SHAPE`, point(?, ?))) order by p.name";
+
+	        return this.jdbcTemplate.query(sql, pm, new Object[] {longitude, lat});
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			throw new ConstituencyNotFoundException();
+		}
 	}
 	
 	public PoliticianData retrieveOne(final Long politicianId) {
