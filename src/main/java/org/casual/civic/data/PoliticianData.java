@@ -12,17 +12,24 @@ public class PoliticianData implements Serializable {
     private final Long criminalCasesPending;
     private final Long totalAssets;
     private final Long liabilities;
+    private final String address;
+    private final String email;
+    private final String contact;
+    private final String ipc;
 
     public static PoliticianData instance(final Long id, final String name, final String constituencyName, final String partyName,
     		final String education, final Long criminalCasesPending, final Long totalAssets,
-    		final Long liabilities) {
+    		final Long liabilities, final String address, final String email, final String contact,
+    		final String ipc) {
         return new PoliticianData(id, name, constituencyName, partyName,
-        		education, criminalCasesPending, totalAssets, liabilities);
+        		education, criminalCasesPending, totalAssets, liabilities,
+        		address, email, contact, ipc);
     }
 
     private PoliticianData(final Long id, final String name, final String constituencyName, final String partyName,
     		final String education, final Long criminalCasesPending, final Long totalAssets,
-    		final Long liabilities) {
+    		final Long liabilities, final String address, final String email, final String contact,
+    		final String ipc) {
         this.id = id;
         this.name = name;
         this.constituencyName = constituencyName;
@@ -31,6 +38,10 @@ public class PoliticianData implements Serializable {
         this.criminalCasesPending = criminalCasesPending;
         this.totalAssets = totalAssets;
         this.liabilities = liabilities;
+        this.address = address;
+        this.email = email;
+        this.contact = contact;
+        this.ipc = ipc;
     }
 
 	public String getName() {

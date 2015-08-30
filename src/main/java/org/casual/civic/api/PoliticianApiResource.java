@@ -1,6 +1,7 @@
 package org.casual.civic.api;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.casual.civic.core.infra.ApiSerializer;
 import org.casual.civic.core.infra.CommandProcessingResult;
@@ -52,16 +53,18 @@ public class PoliticianApiResource {
 	@Transactional(readOnly = true)
     public String retrievePoliticiansByLatLong(@RequestParam("lat") final double latitude,
     		@RequestParam("long") final double longitude) {
-        final Collection<PoliticianData> politicians = this.politicianReadPlatformService.retrieveByLatLong(latitude,
+        final List<PoliticianData> politicians = this.politicianReadPlatformService.retrieveByLatLong(latitude,
         		longitude);
-        return this.jsonSerializer.serialize(politicians);
+        System.out.println(politicians.size());
+        return this.jsonSerializer.serialize(politicians.get(0));
     }
 	
 	@RequestMapping(value = "/geocode", method = RequestMethod.GET, produces = "application/json; charset=utf-8")  
 	@Transactional(readOnly = true)
     public String retrievePoliticiansByGeocoding(@RequestParam("address") final String address) {
-        final Collection<PoliticianData> politicians = this.politicianReadPlatformService.retrieveByAddress(address);
-		return this.jsonSerializer.serialize(politicians);
+        final List<PoliticianData> politicians = this.politicianReadPlatformService.retrieveByAddress(address);
+		System.out.println(politicians.size());
+        return this.jsonSerializer.serialize(politicians.get(0));
     }
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")  

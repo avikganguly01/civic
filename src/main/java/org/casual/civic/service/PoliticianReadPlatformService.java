@@ -73,7 +73,7 @@ public class PoliticianReadPlatformService {
 	        		" where cpo.OGR_FID = (select cpoo.OGR_FID from c_polygons cpoo where st_contains(cpoo.`SHAPE`, point(?, ?))) order by p.name";
 
 	        return this.jdbcTemplate.query(sql, pm, new Object[] {longitude, lat});
-		} catch (IndexOutOfBoundsException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ConstituencyNotFoundException();
 		}
@@ -93,8 +93,8 @@ public class PoliticianReadPlatformService {
 	private static final class PoliticianMapper implements RowMapper<PoliticianData> {
 
         public String schema() {
-            return " p.id as id, p.name, cc.`name` as constituencyName, cp.`abbreviation` as partyName, p.`criminal_cases_pending`, p.`education`, p.`totalAssets`, p.`liabilities`" +
-            	   " from c_politician p inner join c_party cp on p.`party_id`=cp.`id`" +
+            return " p.id as id, p.name, cc.`name` as constituencyName, cp.`abbreviation` as partyName, p.`criminal_cases_pending`, p.`education`, p.`totalAssets`, p.`liabilities`," +
+            	   " p.address, p.email, p.contact, p.ipc from c_politician p inner join c_party cp on p.`party_id`=cp.`id`" +
             	   " inner join c_constituency cc on cc.`id`=p.`constituency_id` ";
         }
 
@@ -109,9 +109,14 @@ public class PoliticianReadPlatformService {
             final Long criminalCasesPending = rs.getLong("criminal_cases_pending");
             final Long totalAssets = rs.getLong("totalAssets");
             final Long liabilities = rs.getLong("liabilities");
+            final String address = rs.getString("address");
+            final String email = rs.getString("email");
+            final String contact = rs.getString("contact");
+            final String ipc = rs.getString("ipc");
 
             return PoliticianData.instance(id, name, constituencyName, partyName,
-            		education, criminalCasesPending, totalAssets, liabilities);
+            		education, criminalCasesPending, totalAssets, liabilities,
+            		address, email, contact, ipc);
         }
     }
 

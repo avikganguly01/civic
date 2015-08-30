@@ -301,3 +301,10 @@ CREATE TABLE `c_api_keys` (
   `key` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  
+  
+  
+alter table `c_politician` add column `address` VARCHAR(200) DEFAULT NULL;
+alter table `c_politician` add column `email` VARCHAR(200) DEFAULT NULL;
+alter table `c_politician` add column `contact` VARCHAR(200) DEFAULT NULL;
+alter table `c_politician` add column `ipc` VARCHAR(5000) DEFAULT NULL;
