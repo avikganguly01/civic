@@ -31,6 +31,7 @@ public class ServiceExceptionHandler extends ResponseEntityExceptionHandler {
         } else if(ex instanceof DataAccessException) {
         	return new ResponseEntity<Object>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
         } else {
+        	ex.printStackTrace();
             return new ResponseEntity<Object>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

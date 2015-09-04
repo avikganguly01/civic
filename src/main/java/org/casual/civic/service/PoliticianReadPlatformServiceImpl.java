@@ -24,12 +24,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 @Service
-public class PoliticianReadPlatformService {
+public class PoliticianReadPlatformServiceImpl {
 
 	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	private PoliticianReadPlatformService(DataSource dataSource) {
+	private PoliticianReadPlatformServiceImpl(DataSource dataSource) {
 	    this.jdbcTemplate = new JdbcTemplate();
 	    this.jdbcTemplate.setDataSource(dataSource);
 	}
@@ -77,6 +77,12 @@ public class PoliticianReadPlatformService {
 			e.printStackTrace();
 			throw new ConstituencyNotFoundException();
 		}
+	}
+	
+	public String retrieveApiKey(int index) {
+		String sql = "select `key` from c_api_keys";
+        final List<String> apiKeys = this.jdbcTemplate.queryForList(sql, String.class);
+        return apiKeys.get(index);
 	}
 	
 	public PoliticianData retrieveOne(final Long politicianId) {

@@ -8,7 +8,7 @@ import org.casual.civic.core.infra.CommandProcessingResult;
 import org.casual.civic.core.infra.FromJsonHelper;
 import org.casual.civic.core.infra.JsonCommand;
 import org.casual.civic.data.PoliticianData;
-import org.casual.civic.service.PoliticianReadPlatformService;
+import org.casual.civic.service.PoliticianReadPlatformServiceImpl;
 import org.casual.civic.service.PoliticianWritePlatformServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +26,13 @@ import com.google.gson.JsonParser;
 @RequestMapping("/politicians") 
 public class PoliticianApiResource {
 	
-	private final PoliticianReadPlatformService politicianReadPlatformService;
+	private final PoliticianReadPlatformServiceImpl politicianReadPlatformService;
 	private final PoliticianWritePlatformServiceImpl politicianWritePlatformService;
 	private final ApiSerializer<PoliticianData> jsonSerializer;
 	private final FromJsonHelper fromApiJsonHelper;
 	
 	@Autowired
-    public PoliticianApiResource(final PoliticianReadPlatformService politicianReadPlatformService,
+    public PoliticianApiResource(final PoliticianReadPlatformServiceImpl politicianReadPlatformService,
     		final PoliticianWritePlatformServiceImpl politicianWritePlatformService,
     		final ApiSerializer<PoliticianData> jsonSerializer,
     		final FromJsonHelper fromApiJsonHelper) {
@@ -55,7 +55,6 @@ public class PoliticianApiResource {
     		@RequestParam("long") final double longitude) {
         final List<PoliticianData> politicians = this.politicianReadPlatformService.retrieveByLatLong(latitude,
         		longitude);
-        System.out.println(politicians.size());
         return this.jsonSerializer.serialize(politicians.get(0));
     }
 	
@@ -63,7 +62,6 @@ public class PoliticianApiResource {
 	@Transactional(readOnly = true)
     public String retrievePoliticiansByGeocoding(@RequestParam("address") final String address) {
         final List<PoliticianData> politicians = this.politicianReadPlatformService.retrieveByAddress(address);
-		System.out.println(politicians.size());
         return this.jsonSerializer.serialize(politicians.get(0));
     }
 	

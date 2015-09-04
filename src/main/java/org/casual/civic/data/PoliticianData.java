@@ -25,6 +25,12 @@ public class PoliticianData implements Serializable {
         		education, criminalCasesPending, totalAssets, liabilities,
         		address, email, contact, ipc);
     }
+    
+    public static PoliticianData nameInstance(final String name) {
+        return new PoliticianData(null, name, null, null,
+        		null, null, null, null,
+        		null, null, null, null);
+    }
 
     private PoliticianData(final Long id, final String name, final String constituencyName, final String partyName,
     		final String education, final Long criminalCasesPending, final Long totalAssets,
