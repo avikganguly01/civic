@@ -9,5 +9,6 @@ public class CivicApplication {
 
     public static void main(String[] args) {
     	ConfigurableApplicationContext ctx = SpringApplication.run(Configuration.class, args);
+//    	KettleEnvironment.init();
     }
 }

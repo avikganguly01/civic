@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformation>
+  <info>
+    <name>AssemblyTransform</name>
+    <description/>
+    <extended_description/>
+    <trans_version/>
+    <directory>&#47;</directory>
+    <parameters>
+    </parameters>
+    <log>
+      <read/>
+      <write/>
+      <input/>
+      <output/>
+      <update/>
+      <rejected/>
+      <connection/>
+      <table/>
+      <step_performance_table/>
+      <use_batchid>Y</use_batchid>
+      <use_logfield>N</use_logfield>
+      <size_limit_lines/>
+    </log>
+    <maxdate>
+      <connection/>
+      <table/>
+      <field/>
+      <offset>0.0</offset>
+      <maxdiff>0.0</maxdiff>
+    </maxdate>
+    <size_rowset>10000</size_rowset>
+    <sleep_time_empty>50</sleep_time_empty>
+    <sleep_time_full>50</sleep_time_full>
+    <unique_connections>N</unique_connections>
+    <feedback_shown>Y</feedback_shown>
+    <feedback_size>50000</feedback_size>
+    <using_thread_priorities>Y</using_thread_priorities>
+    <shared_objects_file/>
+    <capture_step_performance>N</capture_step_performance>
+    <step_performance_capturing_delay>1000</step_performance_capturing_delay>
+    <dependencies>
+    </dependencies>
+    <partitionschemas>
+    </partitionschemas>
+    <slaveservers>
+    </slaveservers>
+    <clusterschemas>
+    </clusterschemas>
+  <modified_user>-</modified_user>
+  <modified_date>2015&#47;09&#47;18 12:23:30.858</modified_date>
+  </info>
+  <notepads>
+  </notepads>
+  <connection>
+    <name>LocalMy</name>
+    <server>localhost</server>
+    <type>MYSQL</type>
+    <access>Native</access>
+    <database>civic</database>
+    <port>3306</port>
+    <username>root</username>
+    <password>Encrypted 2be98afc86aa7f2e4cb79ce7dc781bed6</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>EXTRA_OPTION_MYSQL.defaultFetchSize</code><attribute>500</attribute></attribute>
+      <attribute><code>EXTRA_OPTION_MYSQL.useCursorFetch</code><attribute>true</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>3306</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>STREAM_RESULTS</code><attribute>Y</attribute></attribute>
+      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>N</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
+  <order>
+  <hop> <from>Execute SQL script</from><to>Shapefile File Input</to><enabled>Y</enabled> </hop>  <hop> <from>Shapefile File Input</from><to>Table output</to><enabled>Y</enabled> </hop>  </order>
+  <step>
+    <name>Shapefile File Input</name>
+    <type>GISFileInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <filename>&#47;Users&#47;avik&#47;Documents&#47;maps&#47;assembly-constituencies&#47;India_AC.shp</filename>
+    <isfilenameinfield>N</isfilenameinfield>
+    <filenamefield/>
+    <limit>0</limit>
+    <add_rownr>N</add_rownr>
+    <field_rownr/>
+    <gis_file_charset>MacRoman</gis_file_charset>
+    <passing_through_fields>N</passing_through_fields>
+    <accept_stepname/>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>349</xloc>
+      <yloc>196</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Table output</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>LocalMy</connection>
+    <schema/>
+    <table>c_assemblies</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>N</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+        <field>
+          <column_name>the_geom</column_name>
+          <stream_name>the_geom</stream_name>
+        </field>
+        <field>
+          <column_name>objectid</column_name>
+          <stream_name>OBJECTID</stream_name>
+        </field>
+        <field>
+          <column_name>st_code</column_name>
+          <stream_name>ST_CODE</stream_name>
+        </field>
+        <field>
+          <column_name>st_name</column_name>
+          <stream_name>ST_NAME</stream_name>
+        </field>
+        <field>
+          <column_name>dt_code</column_name>
+          <stream_name>DT_CODE</stream_name>
+        </field>
+        <field>
+          <column_name>dist_name</column_name>
+          <stream_name>DIST_NAME</stream_name>
+        </field>
+        <field>
+          <column_name>ac_no</column_name>
+          <stream_name>AC_NO</stream_name>
+        </field>
+        <field>
+          <column_name>ac_name</column_name>
+          <stream_name>AC_NAME</stream_name>
+        </field>
+        <field>
+          <column_name>pc_no</column_name>
+          <stream_name>PC_NO</stream_name>
+        </field>
+        <field>
+          <column_name>pc_name</column_name>
+          <stream_name>PC_NAME</stream_name>
+        </field>
+        <field>
+          <column_name>pc_id</column_name>
+          <stream_name>PC_ID</stream_name>
+        </field>
+        <field>
+          <column_name>status</column_name>
+          <stream_name>STATUS</stream_name>
+        </field>
+        <field>
+          <column_name>shape_leng</column_name>
+          <stream_name>Shape_Leng</stream_name>
+        </field>
+        <field>
+          <column_name>shape_area</column_name>
+          <stream_name>Shape_Area</stream_name>
+        </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>463</xloc>
+      <yloc>195</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Execute SQL script</name>
+    <type>ExecSQL</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>LocalMy</connection>
+    <execute_each_row>N</execute_each_row>
+    <replace_variables>N</replace_variables>
+    <sql>CREATE TABLE IF NOT EXISTS `c_assemblies` (
+  `objectid` int(11) DEFAULT NULL,
+  `the_geom` geometry NOT NULL,
+  `st_code` varchar(254) DEFAULT NULL,
+  `st_name` varchar(254) DEFAULT NULL,
+  `dt_code` varchar(254) DEFAULT NULL,
+  `dist_name` varchar(254) DEFAULT NULL,
+  `ac_no` double(19,11) DEFAULT NULL,
+  `ac_name` varchar(254) DEFAULT NULL,
+  `pc_no` double(19,11) DEFAULT NULL,
+  `pc_name` varchar(254) DEFAULT NULL,
+  `pc_id` double(19,11) DEFAULT NULL,
+  `status` varchar(254) DEFAULT NULL,
+  `shape_leng` double(19,11) DEFAULT NULL,
+  `shape_area` double(19,11) DEFAULT NULL,
+  SPATIAL KEY `the_geom` (`the_geom`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;</sql>
+    <insert_field/>
+    <update_field/>
+    <delete_field/>
+    <read_field/>
+    <arguments>
+    </arguments>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>234</xloc>
+      <yloc>198</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step_error_handling>
+  </step_error_handling>
+   <slave-step-copy-partition-distribution>
+</slave-step-copy-partition-distribution>
+   <slave_transformation>N</slave_transformation>
+</transformation>

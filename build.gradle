@@ -4,6 +4,9 @@ buildscript {
     }
     repositories {
         mavenCentral()
+        maven {
+		url "http://nexus.pentaho.org/content/repositories/pentaho-public-release-repos/"
+    	}
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
@@ -28,6 +31,9 @@ targetCompatibility = 1.7
 
 repositories {
     mavenCentral()
+    maven {
+	url "http://nexus.pentaho.org/content/repositories/pentaho-public-release-repos/"
+	}
 }
 
 configurations {
@@ -46,6 +52,8 @@ dependencies {
     compile('com.squareup.okhttp:okhttp:2.0.0')
     compile('com.squareup.okhttp:okhttp-urlconnection:2.0.0')
     compile('com.vividsolutions:jts:1.13')
+    compile('pentaho-kettle:kettle-core:5.0.9')
+    compile('pentaho-kettle:kettle-engine:5.0.9')
     runtime("mysql:mysql-connector-java")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 }

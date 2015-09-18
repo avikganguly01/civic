@@ -29,6 +29,7 @@ public class ServiceExceptionHandler extends ResponseEntityExceptionHandler {
         	populateErrorResponseMessage(errorResponse,(PlatformException) ex);
             return new ResponseEntity<Object>(errorResponse, HttpStatus.NOT_FOUND);
         } else if(ex instanceof DataAccessException) {
+        	ex.printStackTrace();
         	return new ResponseEntity<Object>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
         } else {
         	ex.printStackTrace();

@@ -6,7 +6,6 @@ angular.module('myApp.controllers', []).
 	  Restangular.all("key/maps").getList()
 	  .then(function(apiKey) {
 		  $scope.apiKey = apiKey[0].name;
-		  console.log($scope.apiKey);
 		});
 	  
 	  function initialize() {
@@ -56,7 +55,7 @@ angular.module('myApp.controllers', []).
 					    	  if ($scope.infoWindow) {
 					    		  $scope.infoWindow.close();
 					    	    }
-					    	  Restangular.one("politicians/latlong","").get({lat: event.latLng.G, long: event.latLng.K})
+					    	  Restangular.one("politicians/latlong","").get({lat: event.latLng.H, long: event.latLng.L})
 					    	  .then(function(pol) {
 					    		  var politician = "<b>Constituency Name : " + name + "</b><br/>" +
 					    		  	"Name :" + pol.name + "<br/>Party :" + pol.partyName + "<br/>Contact No. : " + pol.contact +

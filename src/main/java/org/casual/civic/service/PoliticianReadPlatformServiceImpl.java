@@ -43,8 +43,8 @@ public class PoliticianReadPlatformServiceImpl {
 	
 	public List<PoliticianData> retrieveByLatLong(final double latitude, final double longitude) {
 		final PoliticianMapper pm = new PoliticianMapper();
-        final String sql = "select " + pm.schema() + " inner join c_polygons cpo on cpo.OGR_FID=cc.polygon_id " +
-        		" where cpo.OGR_FID = (select cpoo.OGR_FID from c_polygons cpoo where st_contains(cpoo.`SHAPE`, point(?, ?))) order by p.name";
+        final String sql = "select " + pm.schema() + " inner join c_assemblies cpo on cpo.objectid=cc.polygon_id " +
+        		" where cpo.objectid = (select cpoo.objectid from c_assemblies cpoo where st_contains(cpoo.`the_geom`, point(?, ?))) order by p.name";
 
         return this.jdbcTemplate.query(sql, pm, new Object[] {longitude, latitude});
 	}
@@ -69,8 +69,8 @@ public class PoliticianReadPlatformServiceImpl {
 			final double lat = location.get("lat").getAsDouble();
 			final double longitude = location.get("lng").getAsDouble();
 			final PoliticianMapper pm = new PoliticianMapper();
-	        sql = "select " + pm.schema() + " inner join c_polygons cpo on cpo.OGR_FID=cc.polygon_id " +
-	        		" where cpo.OGR_FID = (select cpoo.OGR_FID from c_polygons cpoo where st_contains(cpoo.`SHAPE`, point(?, ?))) order by p.name";
+	        sql = "select " + pm.schema() + " inner join c_assemblies cpo on cpo.objectid=cc.polygon_id " +
+	        		" where cpo.objectid = (select cpoo.objectid from c_assemblies cpoo where st_contains(cpoo.`the_geom`, point(?, ?))) order by p.name";
 
 	        return this.jdbcTemplate.query(sql, pm, new Object[] {longitude, lat});
 		} catch (Exception e) {

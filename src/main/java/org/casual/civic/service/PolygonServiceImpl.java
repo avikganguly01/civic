@@ -28,7 +28,7 @@ private JdbcTemplate jdbcTemplate;
 	}
 	
 	public List<PolygonData> retrieveAll() {
-		String sql = "select SHAPE, ac_name from c_polygons where st_code=07";
+		String sql = "select the_geom, ac_name from c_assemblies where st_code=07";
 		final List<PolygonData> polygons = new ArrayList<>();
 		try{
 			SqlRowSet rowSet =  this.jdbcTemplate.queryForRowSet(sql);
@@ -45,7 +45,7 @@ private JdbcTemplate jdbcTemplate;
 	}
 	
 	private Geometry retrieveGeometry(SqlRowSet rowSet) throws Exception {
-		byte[] geometryAsBytes = (byte[]) rowSet.getObject("SHAPE");
+		byte[] geometryAsBytes = (byte[]) rowSet.getObject("the_geom");
 		 
         if (geometryAsBytes.length < 5) {
             throw new Exception("Invalid geometry inputStream - less than five bytes");
